@@ -18,12 +18,29 @@ Hints:
 """
 
 import sys
-
+import string
+import re
 def word_frequency(text):
     frequencies = {} # Dictionary to store word frequencies
-
-    # Your code here
-    
+    text = text.lower() # Lowercase
+    words = text.split() # Split based on whitespace
+    final = []
+    for i in range(len(words)):
+        # Iterating through all words to strip punctuations at their beginning and end
+        words[i] = words[i].strip(string.punctuation)
+        # Split those words that has -- in middle
+        lst = words[i].split('-')
+        for w in range(len(lst)):
+            lst[w] = lst[w].strip(string.punctuation)
+        # Add all words to a new list 
+        final.extend(lst)
+    for i in range(len(final)):
+        # Iterating through the list of words
+        if final[i] not in frequencies:
+            # Add a new word in the dictionary
+            frequencies[final[i]] = 0   
+        # add 1 to the count of an already existing word 
+        frequencies[final[i]] += 1    
     return frequencies
 
 # Scaffold for opening a file and running word_frequency() on the contents
@@ -42,7 +59,7 @@ if __name__ == "__main__":
         # Print results
         for word, count in frequencies.items():
             print(f"{word}: {count}")
-    
+            
     except FileNotFoundError:
         print(f"Error: File '{filename}' not found.")
         sys.exit(1)
